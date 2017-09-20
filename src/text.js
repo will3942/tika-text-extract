@@ -10,10 +10,10 @@ const URL = 'http://localhost:9998/tika';
  * @param {Buffer|String|Promise} input File to extract text from
  * @return {Promise.<String>} Extracted text
  */
-export function extract(input = '') {
+export function extract(input = '', type) {
   const fileStream = isStream(input) ? input : intoStream(input);
   const tikaStream = got.stream.put(URL, {
-    headers: {Accept: 'text/plain'}
+    headers: {Accept: 'text/plain', 'Content-Type': type, 'X-Tika-PDFOcrStrategy': 'ocr_only'}
   });
 
   return getStream(fileStream.pipe(tikaStream));
